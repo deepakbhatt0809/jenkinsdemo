@@ -9,7 +9,7 @@
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t deepakbhatt0809/jenkinsdemo .'
+        sh 'docker build -t jenkinsdemo:latest .'
       }
     }
     stage('Login') {
@@ -19,7 +19,7 @@
     }
     stage('Push') {
       steps {
-        sh 'docker push deepakbhatt0809/jenkinsdemo'
+        sh 'docker push deepakbhatt07/jmd-docker-repository'
       }
     }
   }
