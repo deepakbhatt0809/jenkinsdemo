@@ -19,7 +19,7 @@
     }
     stage('Push') {
       steps {
-        sh 'docker push deepakbhatt07/jmd-docker-repository'
+        sh 'docker push deepakbhatt07/jenkinsdemo:latest'
       }
     }
   }
