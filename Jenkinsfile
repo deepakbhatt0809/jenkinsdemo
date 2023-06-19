@@ -1,31 +1,15 @@
-﻿pipeline {
-  agent any
-  options {
-    buildDiscarder(logRotator(numToKeepStr: '5'))
-  }
-  environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-  }
-  stages {
-    stage('Build') {
-      steps {
-        sh 'docker build -t jenkinsdemo:latest .'
-      }
+node {   
+    stage('Clone repository') {
+        git credentialsId: 'github', url: 'https://github.com/deepakbhatt0809/jenkinsdemo'
     }
-    stage('Login') {
-      steps {
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-      }
+    
+    stage('Build image') {
+       dockerImage = docker.build("deepakbhatt07/jenkinsdemo:latest")
     }
-    stage('Push') {
-      steps {
-        sh 'docker push deepakbhatt07/jenkinsdemo:latest'
-      }
-    }
-  }
-  post {
-    always {
-      sh 'docker logout'
-    }
-  }
+    
+ stage('Push image') {
+        withDockerRegistry([ credentialsId: "dockerhub", url: "" ]) {
+        dockerImage.push()
+        }
+    }    
 }
